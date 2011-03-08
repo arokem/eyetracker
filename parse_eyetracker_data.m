@@ -16,7 +16,7 @@
 clear all;
 
 %%%%%%%%%%%%%%%%%%%%%% User input ****************************
-fileStr='cg021810';
+%fileStr='cg021810';
 %fileStr='mas02142011';
 %fileStr='CG040710';
 %fileStr='rnd021810';
@@ -28,9 +28,10 @@ N1=26; %Make sure first 26 lines of eyetracker data file have to be removed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-inFileStr=strcat('dat\',fileStr,'.txt');
-outFileStr=strcat('dat\',fileStr,'_mod.txt');
-matFileStr=strcat('dat\',fileStr,'_mod.mat'); 
+[filename, pathname, filterindex] = uigetfile('*.txt', 'Pick an eye-tracker file');
+inFileStr=strcat(pathname,filename);
+outFileStr=strcat(pathname,filename(1:find(filename=='.')-1),'mod.txt');
+matFileStr=strcat(pathname,filename(1:find(filename=='.')-1),'_mod.mat'); 
 
 inFile=fopen(inFileStr,'r');
 outFile=fopen(outFileStr,'w');
