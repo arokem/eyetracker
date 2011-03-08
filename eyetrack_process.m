@@ -54,11 +54,11 @@ syncPulsePeriodMin=5/6; %5/6 seconds
 syncPeriodMin=syncPulsePeriodMin*params.sampleRate; 
 syncPulsePeriod=2; % 2 seconds for fileNum=2
 syncPeriodMax=params.sampleRate*syncPulsePeriod*4; %User input
-numPulses=378; %160; %number of sync pulses per scan
+numPulses=150; %160; %number of sync pulses per scan
 
 xyWindow=1;  %User specified fixation windowl within 1 degree of visual arc
 BlinkOverride=0; % set this to 1 to perform blink removal always irrepsective of noise/jitter in pupilheight
-newFileStr=''; %enter the new file name without extension. example 'cg_eyetrack_data_021810'
+newFileStr='data_out'; %enter the new file name without extension. example 'cg_eyetrack_data_021810'
 
 %%%%%%%%%%%%%%%%%%%%%% End of User input required****************************
 
@@ -66,7 +66,7 @@ newFileStr=''; %enter the new file name without extension. example 'cg_eyetrack_
 
 plotFigure=1; %plot X,Y every scan optionally
 plotFigure_2=1; %plot blink related plots and misc
-printFile=0; %set this to 1 to print data to file
+printFile=1; %set this to 1 to print data to file
 
 includeLPF=1; %include low pass filter
 includeHPF=1; %include high pass filter
@@ -100,40 +100,48 @@ numGuardSamples=60; %used by sync pulse detection
 %    filePathStr='dat\';
 %end
 
-filePathStr='dat/'; %this works for both unix and windows
+filePathStr='dat'; %this works for both unix and windows
 
 %%New File
+if nargin<1 
+    [filename, pathname, filterindex] = uigetfile('*.txt', 'Pick an eye-tracking file');
+    fileStr0 = fullfile(pathname,filename);
+    disp(fileStr0)
+    fileNum=NaN;
+    
+end
+
 if fileNum==0,
-fileStr0=strcat(filePathStr,newFileStr);
+    fileStr0=fullfile(filePathStr,newFileStr);
 end
 
 %%%%%%% Test with existig files
 if fileNum==1,
-fileStr0=strcat(filePathStr,'cg_eyetrack_data_021810_mod');
+fileStr0=fullfile(filePathStr,'cg_eyetrack_data_021810_mod');
 numPulses=378; 
 end
 
 if fileNum==2,
-fileStr0=strcat(filePathStr,'cg_eyetrack_data_021810_saccade_4'); 
+fileStr0=fullfile(filePathStr,'cg_eyetrack_data_021810_saccade_4'); 
 %same as cg_eyetrack_data_021810 but with saccades artificially simulated
 numPulses=378; 
 end
 
 if fileNum==3,
-fileStr0=strcat(filePathStr,'mas02142011_mod'); %.mat';
+fileStr0=fullfile(filePathStr,'mas02142011_mod'); %.mat';
 numPulses=160; 
 end
 
 if fileNum==4,
-fileStr0=strcat(filePathStr,'CG040710_mod'); % due to aspectRatio jitters
+fileStr0=fullfile(filePathStr,'CG040710_mod'); % due to aspectRatio jitters
 numPulses=378;
 end
 if fileNum==5,
-fileStr0=strcat(filePathStr,'rnd021810_mod');
+fileStr0=fullfile(filePathStr,'rnd021810_mod');
 numPulses=378;
 end
 if fileNum==6,
-fileStr0=strcat(filePathStr,'rnd040710_mod'); %scan 3,9 blinkMemory and genuine saccades clash
+fileStr0=fullfile(filePathStr,'rnd040710_mod'); %scan 3,9 blinkMemory and genuine saccades clash
 numPulses=378;
 end
 %genuine saccadic movements in scan beginnings affecting long term average?
@@ -141,7 +149,7 @@ end
 
 disp('Processing data')
 
-fileStr=strcat(fileStr0,'.mat'); %'dat\cg_eyetrack_data_021810.mat';
+fileStr=strcat(fileStr0(1:find(fileStr0=='.')-1),'.mat'); %'dat\cg_eyetrack_data_021810.mat';
 startNum=0;
 
 load(fileStr); %loads array eyetrack_data which had been stored in file
@@ -352,7 +360,7 @@ if plotFigure_2==1,
     end
 
     N1=syncUpDownArray(1); %39100
-    N0=N1; N3=1000;
+    N0=N1; N3=100000;
     
     figure(10)
     hold off
