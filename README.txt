@@ -2,6 +2,7 @@
 README FILE FOR PROCESSING EYE TRACKER DATA 
 ===========================================
 
+This work made possible by CORE Grant EY003176. 
 
 1. Run "parse_eyetracker_data.m" program.
 
