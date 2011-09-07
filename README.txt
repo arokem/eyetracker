@@ -11,19 +11,17 @@ README FILE FOR PROCESSING EYE TRACKER DATA
 
 2. Run "clear all; eyetrack_process(TR_array, numTR_array);"
 
-   TR_array: Array containing TR(Time of repetition) for each scan in seconds.
+   TR_array: Array containing TR for each scan in seconds.
    numTR_array: Array containing number of TR pulses for each scan.
-
-   NOTE: wrong values specified in TR_array will give wrong results.
 
    Input filename is  specified using "uigetFile" command 
    when it pops a window asking for input file name.
 
- Example:  For file: cg021810.txt
+ Example:  For file: wc030311.txt (and the modified wc030311_mod.txt, wc030311_mod.mat)
 
    clear all; 
-   TR_array=ones(1,13)*1;
-   numTR_array = ones(1,13)*378;
+   TR_array=[2 2 2 2 2 2 2 2 2 2 2];
+   numTR_array = [150 180 180 180 180 180 180 180 180 180 150];
    eyetrack_process(TR_array, numTR_array);
 
 
@@ -62,7 +60,8 @@ scan output files printed by "eyetrack_process.m"
 Issues:
 ========
  1.  Array Indexing and array size checks: 
-   most issues have been fixed, but there could be residual bugs
+  
+  most issues have been fixed, but there could be residual bugs
   which get exposed by new data files. If they do exist, feel free to fix them.
 
  2. Noisy Data:
@@ -71,20 +70,9 @@ Issues:
     it may print wrong values in pupil height, pupil width, X and Y data.
     Which will result in misclassified blinks and poorer peformance.
 
-    Example plots in plots/ directory:
-          anna_blink_data_scan_1 :  good data  cg021810.txt
-	  ariel_blink_data_scan_1 :  noisy data  mas02142011
-
-    It may be a good idea to analyze the difference between
-    Anna's eyetracker setup and present setup to identify the
-   source of this eyetracker noise.
-
-   A) It seems specific steps need to be done to help the eyetracker 
-      locate the pupil correctly.Viewpoint eyetracker user guide  chapter 5
-      talks about "Locating Pupil and Glint". 
-
-  B) Thomas: former postdoc who helped Anna setup eyetracker might be able to help.
-       tlauritzen@gmail.com
+    It seems specific steps need to be done to help the eyetracker 
+    locate the pupil correctly.Viewpoint eyetracker user guide  chapter 5
+    talks about "Locating Pupil and Glint". 
 
 
 NOTE:
